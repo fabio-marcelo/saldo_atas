@@ -62,5 +62,4 @@ Certifique-se de manter os seguintes arquivos na mesma pasta[cite: 1]:
 gerador-saldo-atas/
 │
 ├── executar_relatorios.bat   # Script batch disparador[cite: 1]
-├── gerador.R                 # Script R de processamento e compilação LaTeX
-└── README.md                 # Documentação do projeto
+└── gerador.R                 # Script R de processamento e compilação LaTeX
