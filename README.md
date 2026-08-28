@@ -5,15 +5,13 @@ Automação em **R** com disparador em lote (**Batch/Windows**) para processamen
 ---
 
 ## 📋 Sumário
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Funcionalidades Principais](#-funcionalidades-principais)
-- [Requisitos de Software](#-requisitos-de-software)
-- [Estrutura de Arquivos do Repositório](#-estrutura-de-arquivos-do-repositório)
-- [Como Baixar e Preparar a Planilha CSV](#-como-baixar-e-preparar-a-planilha-csv)
-- [Como Executar](#-como-executar)
-- [Estrutura dos Relatórios Gerados](#-estrutura-dos-relatórios-gerados)
-- [Resolução de Problemas](#-resolução-de-problemas)
-- [Licença](#-licença)
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades Principais](#funcionalidades-principais)
+- [Requisitos de Software](#requisitos-de-software)
+- [Estrutura de Arquivos do Repositório](#estrutura-de-arquivos-do-repositório)
+- [Como Baixar e Preparar a Planilha CSV](#como-baixar-e-preparar-a-planilha-csv)
+- [Como Executar](#como-executar)
+- [Estrutura dos Relatórios Gerados](#estrutura-dos-relatórios-gerados)
 
 ---
 
