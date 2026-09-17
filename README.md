@@ -25,6 +25,7 @@ O fluxo segmenta automaticamente os itens licitados por cada número de pregão,
 ├── run_gerador.bat         # Script inicializador em lote para Windows
 ├── gerador.R               # Script principal em R (parsing, higienização e LaTeX)
 └── README.md               # Documentação do projeto
+```
 
 ## Pré-requisitos
 
