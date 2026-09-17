@@ -1,4 +1,4 @@
-# Gerador de Relatórios de Saldo de Atas de Registro de Preços
+# Gerador de Relatórios de Saldo de empenhos não disponíveis
 
 Automação em **R** com disparador em lote (**Batch/Windows**) para processamento de planilhas de saldo de empenho/atas e compilação direta de relatórios consolidados em **PDF (via LaTeX)**.
 
@@ -17,7 +17,7 @@ Automação em **R** com disparador em lote (**Batch/Windows**) para processamen
 
 ## 📌 Sobre o Projeto
 
-Este projeto automatiza a leitura, validação e compilação dos saldos e percentuais adquiridos de itens registrados em **Atas de Registro de Preços**. A partir de uma exportação bruta em CSV, a ferramenta organiza os registros por cada par único de **Pregão e Nº de Ata**, gerando relatórios em formato PDF individuais através do motor LaTeX.
+Este projeto automatiza a leitura, validação e compilação dos saldos e percentuais adquiridos de itens registrados em **Atas de Registro de Preços**. A partir de uma exportação bruta em CSV (SALDO DE EMPENHO-SOLICITACAO e CONTROLE  - FOR_DLAB_021 E FOR_DLAB_007(Saldo não disponível )), a ferramenta organiza os registros por cada par único de **Pregão **, gerando relatórios em formato PDF individuais através do motor LaTeX.
 
 A execução foi desenhada para ser simples para o usuário final: basta um duplo clique no script `executar_relatorios.bat` para detectar o ambiente R, abrir a janela de seleção da planilha e abrir a pasta de PDFs ao término da geração.
 
