@@ -1,63 +1,65 @@
-# Gerador de Relatórios de Saldo de empenhos não disponíveis
+# Gerador de Relatórios de Pregão e Saldo de Empenho
 
-Automação em **R** com disparador em lote (**Batch/Windows**) para processamento de planilhas de saldo de empenho/atas e compilação direta de relatórios consolidados em **PDF (via LaTeX)**.
+Automação em **R** e **Windows Batch Script** voltada à leitura, higienização e processamento de planilhas de controle de saldo de empenho (`.csv`), gerando relatórios tabulares em **PDF** compilados nativamente em **LaTeX**.
 
----
-
-## 📋 Sumário
-- [Sobre o Projeto](#sobre-o-projeto)
-- [Funcionalidades Principais](#funcionalidades-principais)
-- [Requisitos de Software](#requisitos-de-software)
-- [Estrutura de Arquivos do Repositório](#estrutura-de-arquivos-do-repositório)
-- [Como Baixar e Preparar a Planilha CSV](#como-baixar-e-preparar-a-planilha-csv)
-- [Como Executar](#como-executar)
-- [Estrutura dos Relatórios Gerados](#estrutura-dos-relatórios-gerados)
+O fluxo segmenta automaticamente os itens licitados por cada número de pregão, separando itens com propostas regulares daqueles classificados como desertos, fracassados ou sem protocolo numérico SEI.
 
 ---
 
-## 📌 Sobre o Projeto
+## Funcionalidades Principais
 
-Este projeto automatiza a leitura, validação e compilação dos saldos e percentuais adquiridos de itens registrados em **Atas de Registro de Preços**. A partir de uma exportação bruta em CSV (SALDO DE EMPENHO-SOLICITACAO e CONTROLE  - FOR_DLAB_021 E FOR_DLAB_007(Saldo não disponível )), a ferramenta organiza os registros por cada par único de **Pregão **, gerando relatórios em formato PDF individuais através do motor LaTeX.
-
-A execução foi desenhada para ser simples para o usuário final: basta um duplo clique no script `executar_relatorios.bat` para detectar o ambiente R, abrir a janela de seleção da planilha e abrir a pasta de PDFs ao término da geração.
-
----
-
-## 🚀 Funcionalidades Principais
-
-- **Execução com 1 Clique (`executar_relatorios.bat`):** Localiza automaticamente a instalação do R no sistema (PATH, Arquivos de Programas 64-bits ou 32-bits) e inicia o pipeline.
-- **Gerenciamento Autônomo de Dependências:** Instala pacotes faltantes do CRAN em pasta segura do usuário (`~/R_packages`), contornando limitações de permissão de administrador no Windows.
-- **Instalação Automática de LaTeX:** Detecta `pdflatex` no sistema ou baixa e configura o `TinyTeX` de forma transparente caso não exista.
-- **Detecção Inteligente de Cabeçalho:** Localiza a linha correta dos títulos no CSV mesmo que o arquivo venha acompanhado de linhas em branco ou textos informativos no início.
-- **Mapeamento de UASG & Sanitização:** Identifica a UASG pelo padrão do Pregão (RS, SP, MG, PA, PE, GO) e higieniza caracteres reservados do LaTeX e barras (`/`) em nomes de arquivos.
-- **Abertura Automática:** Ao finalizar sem erros, o executável abre diretamente a pasta `Relatorios_PDF` no Windows Explorer.
+- **Execução com um clique (`.bat`):** Localiza automaticamente a instalação do R (`Rscript.exe`) no ambiente do sistema (PATH, Arquivos de Programas 64-bit e 32-bit) e abre a pasta de saída ao concluir.
+- **Detecção dinâmica de cabeçalho:** Identifica a linha exata dos títulos das colunas na planilha bruta por sobreposição de palavras-chave, tolerando metadados ou linhas em branco no início do CSV.
+- **Sanitização de caracteres para LaTeX:** Escape e tratamento rigoroso de caracteres especiais (`%`, `_`, `&`, `$`, `#`, `~`, `^`, `{`, `}`, `\`, além do ordinal `º` transformado para `.o`) para prevenir falhas de compilação do TeX.
+- **Cálculo automático de aquisição média:** Limpeza de strings numéricas e formatações percentuais (conversão de vírgula para ponto decimal) para cálculo da média global por pregão.
+- **Divisão automática de relatórios:**
+  - **Relatório Principal (`Relatorio_pregao_[ID].pdf`):** Contém itens com número de protocolo SEI válido (numérico).
+  - **Relatório de Desertos/Fracassados (`Relatorio_pregao_[ID]_deserto_fracassado.pdf`):** Contém itens com propostas vazias, textos descritivos ou protocolos não numéricos.
+- **Auto-gerenciamento de pacotes:** Instala e carrega pacotes R necessários em diretório isolado do usuário (`%USERPROFILE%\R_packages`), evitando bloqueios por falta de privilégios de administrador.
 
 ---
 
-## 💻 Requisitos de Software
-
-| Software | Requisito Mínimo | Descrição |
-| :--- | :--- | :--- |
-| **Sistema Operacional** | Windows 10 ou 11 | Compatível com o script `executar_relatorios.bat` |
-| **R** | Versão `>= 4.1.0` | [Download oficial do R para Windows](https://cran.r-project.org/bin/windows/base/)[cite: 1] |
-| **Motor LaTeX** | `TinyTeX` ou `MiKTeX` | Não é necessário pré-instalar: o script instala o `TinyTeX` se não encontrar |
-
-### Pacotes do R Utilizados
-O próprio script instala e carrega automaticamente os seguintes pacotes do CRAN:
-* `dplyr` e `tidyr`
-* `readr` e `stringr`
-* `knitr` e `kableExtra`
-* `tinytex`
-* `janitor`
-
----
-
-## 📁 Estrutura de Arquivos do Repositório
-
-Certifique-se de manter os seguintes arquivos na mesma pasta[cite: 1]:
+## Estrutura do Repositório
 
 ```text
-gerador-saldo-atas/
-│
-├── executar_relatorios.bat   # Script batch disparador[cite: 1]
-└── gerador.R                 # Script R de processamento e compilação LaTeX
+├── run_gerador.bat         # Script inicializador em lote para Windows
+├── gerador.R               # Script principal em R (parsing, higienização e LaTeX)
+└── README.md               # Documentação do projeto
+
+## Pré-requisitos
+
+* **Sistema Operacional:** Windows 10 ou superior.
+* **R:** Versão 4.0 ou superior instalada ([Download CRAN](https://cran.r-project.org/bin/windows/base/)).[cite: 1]
+* **Distribuição LaTeX:** TinyTeX (instalado automaticamente pelo script se ausente) ou MiKTeX/TeX Live configurado no sistema.[cite: 2]
+
+### Pacotes R Utilizados
+
+O próprio script se encarrega de verificar e baixar as bibliotecas faltantes na primeira execução:[cite: 2]
+
+* `dplyr`[cite: 2]
+* `tidyr`[cite: 2]
+* `knitr`[cite: 2]
+* `readr`[cite: 2]
+* `stringr`[cite: 2]
+* `janitor`[cite: 2]
+* `tinytex`[cite: 2]
+* `kableExtra`[cite: 2]
+
+---
+
+## Formato Esperado do Arquivo de Entrada (`.csv`)
+
+O arquivo CSV deve utilizar o separador ponto e vírgula (`;`) e a codificação `latin1` (ou `Windows-1252`).[cite: 2] A detecção automática busca as seguintes colunas essenciais na planilha:[cite: 2]
+
+| Coluna de Referência | Descrição |
+| :--- | :--- |
+| `Pregão` | Identificador do processo licitatório (ex: `90013/2025 RS`) |
+| `Item` | Número identificador do item da licitação |
+| `Solicitante(s)` | Unidade ou responsável solicitante |
+| `Quantidade total LFDA-RS` | Quantidade demandada homologada |
+| `Saldo atualizado` | Quantidade residual disponível para empenho |
+| `Nº Ata` | Identificador da Ata de Registro de Preços |
+| `Descrição conforme Termo de Referência...` | Especificação completa do objeto licitado |
+| `Proposta (protocolo SEI)` | Protocolo numérico SEI ou status do item |
+| `Porcentagem adquirida do item` | Percentual de execução/aquisição do saldo (ex: `100,00%` ou `0%`) |
+
